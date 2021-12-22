@@ -2,11 +2,12 @@
 """
     Prefect workflows to get 2d variable from FESOM onto a regular grid.
 """
+import os
 import pathlib
+import re
 
 import numpy as np
 import prefect
-import prefect.tasks.files as file_tasks
 from prefect import Flow, Parameter, task
 
 from simulation_workflows.tasks import common_cdo_chains, fesom
@@ -34,7 +35,8 @@ def get_n_newest_files_for_pattern(pattern: str, path: str, n: int) -> list:
     Task to get the n newest files for a given pattern.
     """
     logger = prefect.context.get("logger")
-    files = list(pathlib.Path(path).glob(pattern))
+    files = [f"{path}/{f}" for f in os.listdir(path)]
+    files = [pathlib.Path(f) for f in files if re.search(pattern, f)]
     logger.info(f"Found {len(files)} files for pattern {pattern}")
     logger.debug(f"Files: {files}")
     logger.info("Sorting files by modification time")
