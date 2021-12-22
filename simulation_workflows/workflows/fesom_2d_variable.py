@@ -43,7 +43,9 @@ with Flow(
     files = file_tasks.operations.Glob(path=pathlib.Path(output_dir))
     # Filter out all files that don't match the pattern
     filtered_files = common_cdo_chains.get_newest_files_for_pattern(
-        files, pattern, nfiles
+        files,
+        nfiles,
+        pattern,
     )
     # Merge the files together:
     fesom_ds = common_cdo_chains.mergetime_files(filtered_files, returnXDataset=True)
