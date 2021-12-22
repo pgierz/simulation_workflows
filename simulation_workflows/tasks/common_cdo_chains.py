@@ -5,6 +5,7 @@ This module contains common CDO command chains as Prefect tasks.
 import re
 from typing import Any
 
+import prefect
 from prefect import task
 
 from .prefect_cdo import Command
@@ -25,8 +26,15 @@ def get_newest_files_for_pattern(files: list, n: int, pattern: str) -> list:
     Returns:
         list: List of files.
     """
+    logger = prefect.context.get("logger")
+    logger.info(f"pattern={pattern}")
     repattern = re.compile(pattern)
+    logger.info("These files are being sorted:")
+    for f in files:
+        logger.info(f)
     files = sorted([f for f in files if repattern.search(f)])
+    logger.info("These files were found:")
+    [logger.info(f) for f in files]
     return files[-n:]
 
 
