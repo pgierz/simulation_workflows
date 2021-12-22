@@ -27,6 +27,16 @@ def finalize_pattern(varname: str) -> str:
     return f"{varname}." + "fesom.[0-9]{6}.01.nc"
 
 
+@task
+def get_n_newest_files_for_pattern(pattern: str, path: str, n: int) -> list:
+    """
+    Task to get the n newest files for a given pattern.
+    """
+    files = pathlib.Path(path).glob(pattern)
+    files.sort(key=lambda x: x.stat().st_mtime, reverse=True)
+    return files[:n]
+
+
 with Flow(
     "Regridded Timmean of Newest N Files for a FESOM 2D Variable (ESM Tools Layout)"
 ) as flow:
@@ -47,15 +57,9 @@ with Flow(
     output_dir = f"{path}/outdata/fesom"
     pattern = finalize_pattern(varname)
     # Get all files in the output directory
-    files = file_tasks.operations.Glob(path=pathlib.Path(output_dir))
-    # Filter out all files that don't match the pattern
-    filtered_files = common_cdo_chains.get_newest_files_for_pattern(
-        files,
-        nfiles,
-        pattern,
-    )
+    files = get_n_newest_files_for_pattern(pattern, output_dir, nfiles)
     # Merge the files together:
-    fesom_ds = common_cdo_chains.mergetime_files(filtered_files, returnXDataset=True)
+    fesom_ds = common_cdo_chains.mergetime_files(files, returnXDataset=True)
 
     # Get the FESOM Mesh:
     fesom_mesh = fesom.get_mesh(path)
