@@ -32,7 +32,7 @@ def get_n_newest_files_for_pattern(pattern: str, path: str, n: int) -> list:
     """
     Task to get the n newest files for a given pattern.
     """
-    files = pathlib.Path(path).glob(pattern)
+    files = list(pathlib.Path(path).glob(pattern))
     files.sort(key=lambda x: x.stat().st_mtime, reverse=True)
     return files[:n]
 
