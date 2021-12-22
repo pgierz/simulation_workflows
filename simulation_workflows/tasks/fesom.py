@@ -23,7 +23,10 @@ def get_mesh(path: str):  # Once py2 is typed: -> pf2.load_mesh_data.fesom_mesh:
     a = namelist["geometry"]["alphaeuler"]
     b = namelist["geometry"]["betaeuler"]
     g = namelist["geometry"]["gammaeuler"]
-    meshobj = pf2.load_mesh(mesh, abg=[a, b, g])
+    try:
+        meshobj = pf2.load_mesh(mesh, abg=[a, b, g])
+    except PermissionError:
+        meshobj = pf2.load_mesh(mesh, abg=[a, b, g], usepickle=False)
     return meshobj
 
 
