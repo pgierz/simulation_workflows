@@ -44,7 +44,7 @@ def get_n_newest_files_for_pattern(pattern: str, path: str, n: int) -> list:
     logger.info("Sorting files by modification time")
     files.sort(key=lambda x: x.stat().st_mtime, reverse=True)
     logger.info(f"Returning the {n} newest files")
-    return files[:n]
+    return [str(f) for f in files[:n]]
 
 
 with Flow(
