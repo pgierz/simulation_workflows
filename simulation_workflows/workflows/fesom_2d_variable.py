@@ -3,7 +3,6 @@
     Prefect workflows to get 2d variable from FESOM onto a regular grid.
 """
 import pathlib
-import re
 
 import numpy as np
 import prefect.tasks.files as file_tasks
@@ -38,7 +37,7 @@ with Flow(
     lons = np_arange(-180, 180, lon_size)
     lats = np_arange(-90, 90, lat_size)
     output_dir = f"{path}/outdata/fesom"
-    pattern = re.compile(f"{varname}." + "fesom.[0-9]{6}.01.nc")
+    pattern = f"{varname}." + "fesom.[0-9]{6}.01.nc"
     # Get all files in the output directory
     files = file_tasks.operations.Glob(path=pathlib.Path(output_dir))
     # Filter out all files that don't match the pattern
