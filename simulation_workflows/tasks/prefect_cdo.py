@@ -9,9 +9,8 @@ used as Prefect Tasks.
 Called ``prefect_cdo`` to avoid conflict with the ``cdo`` module.
 """
 
-from prefect import Task
-
 import cdo as pycdo
+from prefect import Task
 
 
 class Command(Task):
@@ -29,16 +28,14 @@ class Command(Task):
         self.CDO = pycdo.Cdo(**CdoObj_kwargs)
         super().__init__(**kwargs)
 
-    def run(self, command, input_file, output_file=None, **kwargs):
+    def run(self, command, input, output=None, **kwargs):
         """
         Execute the CDO command.
 
         Args:
             - command (str): The CDO command to execute.
-            - input_file (str): The input file to the CDO command.
-            - output_file (str): The output file of the CDO command.
+            - input (str): The input file to the CDO command.
+            - output (str): The output file of the CDO command.
             - **kwargs: Additional keyword arguments to pass to the CDO command.
         """
-        return getattr(self.CDO, command)(
-            input=input_file, output=output_file, **kwargs
-        )
+        return getattr(self.CDO, command)(input=input, output=output, **kwargs)
