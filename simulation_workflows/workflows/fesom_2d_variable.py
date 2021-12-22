@@ -64,7 +64,7 @@ with Flow(
 
     lons = np_arange(-180, 180, lon_size)
     lats = np_arange(-90, 90, lat_size)
-    output_dir = f"{path}/outdata/fesom"
+    output_dir = path + "/outdata/fesom"
     pattern = finalize_pattern(varname)
     # Get all files in the output directory
     files = get_n_newest_files_for_pattern(pattern, output_dir, nfiles)
