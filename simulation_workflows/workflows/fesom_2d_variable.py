@@ -35,8 +35,10 @@ def get_n_newest_files_for_pattern(pattern: str, path: str, n: int) -> list:
     Task to get the n newest files for a given pattern.
     """
     logger = prefect.context.get("logger")
-    files = [path + f"/{f}" for f in os.listdir(path)]
-    files = [pathlib.Path(f) for f in files if re.search(pattern, f)]
+    logger.info(f"Getting {n} newest files in {path} for pattern {pattern}")
+    path_files = os.listdir(path)
+    files_with_path = [os.path.join(path, f) for f in path_files]
+    files = [pathlib.Path(f) for f in files_with_path if re.search(pattern, f)]
     logger.info(f"Found {len(files)} files for pattern {pattern}")
     logger.debug(f"Files: {files}")
     logger.info("Sorting files by modification time")
