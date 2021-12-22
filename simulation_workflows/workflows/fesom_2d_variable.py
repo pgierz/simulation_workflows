@@ -5,6 +5,7 @@
 import pathlib
 
 import numpy as np
+import prefect
 import prefect.tasks.files as file_tasks
 from prefect import Flow, Parameter, task
 
@@ -32,8 +33,13 @@ def get_n_newest_files_for_pattern(pattern: str, path: str, n: int) -> list:
     """
     Task to get the n newest files for a given pattern.
     """
+    logger = prefect.context.get("logger")
     files = list(pathlib.Path(path).glob(pattern))
+    logger.info(f"Found {len(files)} files for pattern {pattern}")
+    logger.debug(f"Files: {files}")
+    logger.info("Sorting files by modification time")
     files.sort(key=lambda x: x.stat().st_mtime, reverse=True)
+    logger.info(f"Returning the {n} newest files")
     return files[:n]
 
 
