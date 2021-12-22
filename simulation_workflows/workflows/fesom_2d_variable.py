@@ -22,6 +22,14 @@ def np_arange(start, stop, step):
 
 
 @task
+def np_meshgrid(x, y) -> [np.ndarray, np.ndarray]:
+    """
+    Task to create a numpy meshgrid from x and y.
+    """
+    return np.meshgrid(x, y)
+
+
+@task
 def finalize_pattern(varname: str) -> str:
     """
     Task to finish up the FESOM filename pattern with the year and month.
@@ -62,8 +70,9 @@ with Flow(
     lat_size = Parameter("Latitude Size (e.g 1 for a 1x1 degree grid)", default=1.0)
     lon_size = Parameter("Longitude Size (e.g 1 for a 1x1 degree grid)", default=1.0)
 
-    lons = np_arange(-180, 180, lon_size)
-    lats = np_arange(-90, 90, lat_size)
+    lon = np_arange(-180, 180, lon_size)
+    lat = np_arange(-90, 90, lat_size)
+    lons, lats = np_meshgrid(lon, lat)
     output_dir = path + "/outdata/fesom"
     pattern = finalize_pattern(varname)
     # Get all files in the output directory
