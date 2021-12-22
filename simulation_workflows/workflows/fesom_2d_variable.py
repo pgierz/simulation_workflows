@@ -5,6 +5,7 @@
 import os
 import pathlib
 import re
+from typing import Tuple
 
 import numpy as np
 import prefect
@@ -22,7 +23,7 @@ def np_arange(start, stop, step):
 
 
 @task
-def np_meshgrid(x, y) -> [np.ndarray, np.ndarray]:
+def np_meshgrid(x, y) -> Tuple[np.ndarray, np.ndarray]:
     """
     Task to create a numpy meshgrid from x and y.
     """
