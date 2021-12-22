@@ -1,0 +1,7 @@
+[report]
+omit =
+    setup.py
+    simulation_workflows/__main__.py
+    simulation_workflows/_version.py
+    versioneer.py
+    tests/*

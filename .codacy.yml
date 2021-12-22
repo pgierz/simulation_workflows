@@ -1,0 +1,8 @@
+---
+exclude_paths:
+  - 'simulation_workflows/_version.py'
+  - 'tests/**/*'
+  - 'tests/*'
+  - 'benchmarks/**/*'
+  - 'setup.py'
+  - 'versioneer.py'

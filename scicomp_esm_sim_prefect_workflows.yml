@@ -1,0 +1,16 @@
+name: scicomp_esm_sim_prefect_workflows
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - prefect
+  - ca-certificates
+  - certifi
+  - openssl
+  - cdo==1.9.9
+  - f90nml
+  - numpy
+  - pyfesom2
+  - loguru
+prefix: /Users/pgierz/.local/opt/miniconda3/envs/scicomp_esm_sim_prefect_workflows
