@@ -19,6 +19,14 @@ def np_arange(start, stop, step):
     return np.arange(start, stop, step)
 
 
+@task
+def finalize_pattern(varname: str) -> str:
+    """
+    Task to finish up the FESOM filename pattern with the year and month.
+    """
+    return f"{varname}." + "fesom.[0-9]{6}.01.nc"
+
+
 with Flow(
     "Regridded Timmean of Newest N Files for a FESOM 2D Variable (ESM Tools Layout)"
 ) as flow:
@@ -37,7 +45,7 @@ with Flow(
     lons = np_arange(-180, 180, lon_size)
     lats = np_arange(-90, 90, lat_size)
     output_dir = f"{path}/outdata/fesom"
-    pattern = f"{varname}." + "fesom.[0-9]{6}.01.nc"
+    pattern = finalize_pattern(varname)
     # Get all files in the output directory
     files = file_tasks.operations.Glob(path=pathlib.Path(output_dir))
     # Filter out all files that don't match the pattern
